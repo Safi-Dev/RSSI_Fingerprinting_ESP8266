@@ -26,4 +26,4 @@ The primary objective of this project is to create an effective and accurate met
 - [Safi-Dev](https://github.com/safi-dev) - Project Lead & Developer
 
 ## License
-This project is licensed under the [CC BY-NC-SA 4.0](LICENSE.md)
+This project is licensed under the [CC BY-NC-SA 4.0](LICENSE.md)(LICENSE)
