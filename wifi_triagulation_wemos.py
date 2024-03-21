@@ -2,36 +2,41 @@
 import board
 import busio
 import digitalio
-import adafruit_requests as requests
+import time
 import adafruit_esp32spi.adafruit_esp32spi_socket as socket
 from adafruit_esp32spi import adafruit_esp32spi
+from adafruit_esp32spi import adafruit_esp32spi_wifimanager
 
 # Define Wi-Fi connection details
-wifi_ssid = "YOUR_WIFI_SSID"
-wifi_password = "YOUR_WIFI_PASSWORD"
-
-# Define API endpoint for transmitting data to the central ESP32 node
-central_node_url = "http://central_node_ip_address:port/data_endpoint"
+wifi_ssid = "ESP32_AP"  # SSID of the ESP32 access point
+wifi_password = "esp32password"  # Password for the ESP32 access point
 
 # Initialize SPI bus and ESP32 pins
 spi = busio.SPI(board.SCK, board.MOSI, board.MISO)
 cs = digitalio.DigitalInOut(board.D5)
-esp32_ready = digitalio.DigitalInOut(board.D6)
+ready = digitalio.DigitalInOut(board.D6)
 reset = digitalio.DigitalInOut(board.D9)
-esp = adafruit_esp32spi.ESP_SPIcontrol(spi, cs, esp32_ready, reset)
+esp = adafruit_esp32spi.ESP_SPIcontrol(spi, cs, ready, reset)
 
 # Initialize ESP32 SPI interface
-requests.set_socket(socket, esp)
+esp.set_network(wifi_ssid, wifi_password)
+
+# Initialize WiFi manager
+wifi_manager = adafruit_esp32spi_wifimanager.ESPSPI_WiFiManager(esp)
 
 # Connect to Wi-Fi
 print("Connecting to Wi-Fi...")
-while not esp.is_connected:
-    try:
-        esp.connect_AP(wifi_ssid, wifi_password)
-    except Exception as e:
-        print("Error connecting to Wi-Fi:", e)
-        continue
+wifi_manager.connect()
+
+# Get the IP address of the central ESP32 node using mDNS
+central_node_ip = socket.getaddrinfo("central-node.local", 80)[0][-1][0]
+central_node_port = 80
+
+# Define API endpoint for transmitting data to the central ESP32 node
+central_node_url = "http://" + central_node_ip + ":" + str(central_node_port) + "/data"
+
 print("Connected to Wi-Fi!")
+print("Central node IP address:", central_node_ip)
 
 # Main loop
 while True:
