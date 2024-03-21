@@ -22,6 +22,9 @@ The primary objective of this project is to create an effective and accurate met
 5. Process the collected data on the central ESP32 node using triangulation algorithms to determine the approximate positions of Wi-Fi APs.
 6. Visualize the positions of Wi-Fi APs on a map using software interfaced with the central ESP32 node.
 
+##To DO 
+[] Add central node web management
+
 ## Contributors
 - [Safi-Dev](https://github.com/safi-dev) - Project Lead & Developer
 
