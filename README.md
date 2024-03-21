@@ -23,7 +23,7 @@ The primary objective of this project is to create an effective and accurate met
 6. Visualize the positions of Wi-Fi APs on a map using software interfaced with the central ESP32 node.
 
 ## To DO 
-[] Add central node web management
+[ ] Add central node web management
 
 ## Contributors
 - [Safi-Dev](https://github.com/safi-dev) - Project Lead & Developer
